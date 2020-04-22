@@ -27,14 +27,24 @@ inode* inode_create(int linenumber) {
 //================================================
 //Exercise 6-3
 void inode_delete(inode* p) {
-  free((void*)p->line_num);
-  free(p);
+  while(p != NULL) {
+    inode* q = p;
+    p = p->nextline;
+    free(p);
+  }
 }
 
 //================================================
 //Exercise 6-3
 void inode_append(inode* p, int linenumber) {
-  p->nextline = inode_create(linenumber);
+  inode* temp = p;
+  while (temp->nextline != NULL) {
+    temp = temp->nextline;
+  }
+  if(temp->line_num != linenumber) {
+    inode* q = inode_create(linenumber);
+    temp->nextline = q;
+  }
   
 }
 //================================================
@@ -161,21 +171,29 @@ static void tree_printme(tree* t, tnode* p) {
 //====================================================================
 //Exercise 6-2
 static void tree_printalpha(tree*t, tnode* p, int n) {
-  int i;
+  int i = 0;
   static char prev[BUFSIZ];
   static bool firsttime = true;
-  // const char* noisewords[BUFSIZ] = {"the at is i and then"};
+  char* noisewords[28] = {    "be","a", "all", "and", "as", "but", "for", "had", "he", 
+                              "him", "his", "i", "in", "is", "it", "mr", "ms", "mrs",
+                              "of", "old", "the", "you", "they", "to", "we", "do", "me",
+                              "my"
+                         };
   if (firsttime) {
     memset(prev, 0, sizeof(prev));
     strcpy(prev, p->word);
     firsttime = false;
   }
-  if (strlen(p->word) > 2) {
-    if (strncmp(prev, p->word, n) != 0) { printf("\n");}
-    strcpy(prev, p->word);
-    printf("%s(%d) ", p->word, p->count);
-    
+  for(i = 0; i < 28; ++i) {
+      if(strcmp(noisewords[i],p->word) == 0) { return; }
   }
+    
+    // if (strlen(p->word) > 2) {
+      if (strncmp(prev, p->word, n) != 0) { printf("\n");}
+      strcpy(prev, p->word);
+      printf("%s(%d) ", p->word, p->count);
+    
+    // }
 }
 //====================================================================
 //Exercise 6-2

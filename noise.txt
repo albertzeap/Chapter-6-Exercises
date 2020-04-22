@@ -1,0 +1,2 @@
+"a", "all", "and", "as", "but", "for", "had", "he", "him", "his", "i", "in", "is", "it", "mr", "ms", "mrs",
+"of", "old", "the", "you", "they", "to", "we"
